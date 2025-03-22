@@ -1,0 +1,14 @@
+camera:
+  rgb_resolution: [1280, 800]
+  fps: 30
+  recording_time: 5
+
+output:
+  base_path: "/home/txnguyen2921/oakd_recordings"  # Absolute path for remote SSH access
+  rgb_filename: "rgb_stream.mp4"
+  depth_filename: "depth_stream.mp4"
+
+depth:
+  colormap: "COLORMAP_JET"  # OpenCV colormap for depth visualization
+  normalize: true
+  equalize_hist: true
