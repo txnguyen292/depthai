@@ -9,6 +9,7 @@ dependencies = [
     "charset-normalizer>=3.4.1",
     "depthai>=2.29.0.0",
     "idna>=3.10",
+    "loguru>=0.7.3",
     "numpy>=2.2.3",
     "opencv-python==4.11.0.86",
     "pip>=25.0.1",
