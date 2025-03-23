@@ -2,37 +2,15 @@ import depthai as dai
 import cv2
 import numpy as np
 import time
-import yaml
 import os
 from loguru import logger
+from .oakd_base import OakDBase
 
-class OakDCamera:
+class OakDCamera(OakDBase):
     def __init__(self, config):
-        self.config = config
-        self.rgb_resolution = tuple(self.config["camera"]["rgb_resolution"])
-        self.fps = self.config["camera"]["fps"]
-        self.recording_time = self.config["camera"]["recording_time"]
-        
-        # Ensure output directory exists and is writable
-        self.output_path = self.config["output"]["base_path"]
-        try:
-            os.makedirs(self.output_path, exist_ok=True)
-            # Test if directory is writable
-            test_file = os.path.join(self.output_path, '.write_test')
-            with open(test_file, 'w') as f:
-                f.write('test')
-            os.remove(test_file)
-        except PermissionError:
-            logger.error(f"No permission to create/write to directory: {self.output_path}")
-            raise
-        except OSError as e:
-            logger.error(f"Failed to create/access output directory {self.output_path}: {e}")
-            raise
-        
-        self.pipeline = None
+        super().__init__(config)
         self.rgb_writer = None
         self.depth_writer = None
-        self.frame_count = 0
         
         self.setup_pipeline()
         self.setup_video_writers()
@@ -106,21 +84,7 @@ class OakDCamera:
                 self.depth_writer.release()
             raise
 
-    def process_depth_frame(self, depth_frame):
-        if self.config["depth"]["normalize"]:
-            depth_frame = cv2.normalize(depth_frame, None, 255, 0, cv2.NORM_INF, cv2.CV_8UC1)
-        
-        if self.config["depth"]["equalize_hist"]:
-            depth_frame = cv2.equalizeHist(depth_frame)
-        
-        colormap = getattr(cv2, self.config["depth"]["colormap"])
-        depth_frame = cv2.applyColorMap(depth_frame, colormap)
-        return cv2.resize(depth_frame, self.rgb_resolution)
 
-    def add_timestamp(self, frame):
-        timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
-        cv2.putText(frame, timestamp, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-        return frame
 
     def record(self):
         logger.info(f"Starting camera test - will record {self.recording_time} seconds of RGB and Depth streams...")
@@ -156,12 +120,14 @@ class OakDCamera:
 
             self.cleanup()
 
-    def cleanup(self):
+    def cleanup(self, display=False):
         # Release writers
-        self.rgb_writer.release()
-        self.depth_writer.release()
+        if hasattr(self, 'rgb_writer') and self.rgb_writer is not None:
+            self.rgb_writer.release()
+        if hasattr(self, 'depth_writer') and self.depth_writer is not None:
+            self.depth_writer.release()
         
-        logger.success(f"\nTest complete! Recorded {self.frame_count} frames")
+        super().cleanup(display)
         logger.debug(f"Saved RGB stream to '{self.config['output']['rgb_filename']}'")
         logger.debug(f"Saved Depth stream to '{self.config['output']['depth_filename']}'")
         logger.debug("\nBoth files are in MP4 format and should be viewable on your MacBook")
