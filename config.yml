@@ -1,10 +1,13 @@
+# Mode can be 'record' or 'object_detection'
+mode: "object_detection"  # Change to "object_detection" to use object detection
+
 camera:
   rgb_resolution: [1280, 800]
   fps: 30
   recording_time: 5
 
 output:
-  base_path: "/home/txnguyen2921/oakd_recordings"  # Absolute path for remote SSH access
+  base_path: "/Users/tungnguyen/personal_projects/depthai/"  # Absolute path for remote SSH access
   rgb_filename: "rgb_stream.mp4"
   depth_filename: "depth_stream.mp4"
 
@@ -12,3 +15,16 @@ depth:
   colormap: "COLORMAP_JET"  # OpenCV colormap for depth visualization
   normalize: true
   equalize_hist: true
+
+detection:
+  recording_time: 30  # Longer recording time for object detection
+  confidence_threshold: 0.5  # Minimum confidence for detection
+  sync_nn: true  # Synchronize neural network inference with the RGB frames
+  output_filename: "object_detection.mp4"  # Output filename for object detection video
+  preview_size: [304, 304]  # Size must be a multiple of 16 for stereo depth
+  save_video: false  # Whether to save the object detection video
+  display_info: true  # Whether to display object information in corner
+
+logging:
+  log_file: "/Users/tungnguyen/personal_projects/depthai/reports/app.log"  # Log file name
+  log_level: "DEBUG"  # Log level

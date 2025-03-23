@@ -9,3 +9,13 @@ wheels/
 *.avi
 # Virtual environments
 .venv
+**/*.cache
+**/*.log
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/*.so
+**/*.o
+**/*.a
+**/*.vscode
+**/depthai-python
