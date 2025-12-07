@@ -40,7 +40,7 @@ class OakDCamera(OakDBase):
         right.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
         right.setBoardSocket(dai.CameraBoardSocket.CAM_C)
 
-        stereo.setDefaultProfilePreset(dai.node.StereoDepth.PresetMode.HIGH_DENSITY)
+        stereo.setDefaultProfilePreset(dai.node.StereoDepth.PresetMode.DEFAULT)
         stereo.setDepthAlign(dai.CameraBoardSocket.CAM_A)
 
         # Linking
