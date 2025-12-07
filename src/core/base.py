@@ -6,13 +6,19 @@ import os
 from loguru import logger
 
 class OakDBase:
-    def __init__(self, config):
+    def __init__(self, config: dict):
         self.config = config
         self.rgb_resolution = tuple(self.config["camera"]["rgb_resolution"])
         self.fps = self.config["camera"]["fps"]
         self.recording_time = self.config["camera"]["recording_time"]
         
-        # Ensure output directory exists and is writable
+        self._setup_output_directory()
+        
+        self.pipeline = None
+        self.frame_count = 0
+
+    def _setup_output_directory(self):
+        """Ensure output directory exists and is writable"""
         self.output_path = os.path.join(self.config["output"]["base_path"], "data")
         try:
             os.makedirs(self.output_path, exist_ok=True)
@@ -27,9 +33,6 @@ class OakDBase:
         except OSError as e:
             logger.error(f"Failed to create/access output directory {self.output_path}: {e}")
             raise
-        
-        self.pipeline = None
-        self.frame_count = 0
         
     def setup_pipeline(self):
         """

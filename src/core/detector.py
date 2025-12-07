@@ -7,31 +7,21 @@ import depthai as dai
 import numpy as np
 from loguru import logger
 
-from .oakd_base import OakDBase
+from .base import OakDBase
+from src.utils.config import ConfigManager
 
 
 class OakDObjectDetectionApp(OakDBase):
     def __init__(self, confidence_threshold=0.5, preview_size=(304, 304), save_video=False, display_info=True, output_path=None, config=None):
-        # Initialize with default config if none provided
-        default_config = {
-            "camera": {
-                "rgb_resolution": [1280, 800],
-                "fps": 30,
-                "recording_time": 30
-            },
-            "output": {
-                "base_path": os.path.dirname(os.path.abspath(__file__)) if output_path is None else os.path.dirname(output_path)
-            },
-            "depth": {
-                "colormap": "COLORMAP_JET",
-                "normalize": True,
-                "equalize_hist": True
-            }
-        }
-        
         # Use provided config or default
-        config = config if config is not None else default_config
-        
+        if config is None:
+            config = ConfigManager.DEFAULT_CONFIG.copy()
+            # Override base path if output_path is provided, otherwise use default or current dir
+            if output_path:
+                 config["output"]["base_path"] = os.path.dirname(output_path)
+            else:
+                 config["output"]["base_path"] = os.path.dirname(os.path.abspath(__file__))
+
         # Initialize the base class
         super().__init__(config)
         
@@ -274,9 +264,3 @@ class OakDObjectDetectionApp(OakDBase):
         
         # Call the parent class cleanup method
         super().cleanup(display)
-
-
-# Run the application if this script is executed directly
-if __name__ == "__main__":
-    app = OakDObjectDetectionApp()
-    app.run()

@@ -4,7 +4,7 @@ import numpy as np
 import time
 import os
 from loguru import logger
-from .oakd_base import OakDBase
+from .base import OakDBase
 
 class OakDCamera(OakDBase):
     def __init__(self, config):
@@ -131,12 +131,3 @@ class OakDCamera(OakDBase):
         logger.debug(f"Saved RGB stream to '{self.config['output']['rgb_filename']}'")
         logger.debug(f"Saved Depth stream to '{self.config['output']['depth_filename']}'")
         logger.debug("\nBoth files are in MP4 format and should be viewable on your MacBook")
-
-def load_config(config_path):
-    try:
-        with open(config_path, 'r') as f:
-            config = yaml.safe_load(f)
-        logger.info(f"Loaded configuration from {config_path}")
-        return config
-    except Exception as e:
-        logger.exception(f"Error loading config from {config_path}: {e}")

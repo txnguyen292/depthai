@@ -1,3 +1,5 @@
-from .oakd_camera import OakDCamera, OakDObjectDetection, load_config
+from .core.recorder import OakDCamera
+from .core.detector import OakDObjectDetectionApp
+from .utils.config import ConfigManager
 
-__all__ = ['OakDCamera', 'OakDObjectDetection', 'load_config']
+__all__ = ['OakDCamera', 'OakDObjectDetectionApp', 'ConfigManager']
