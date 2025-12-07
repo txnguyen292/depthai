@@ -19,3 +19,7 @@ wheels/
 **/*.a
 **/*.vscode
 **/depthai-python
+.DS_Store
+.idea/
+.vscode/
+*.iml
