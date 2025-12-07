@@ -40,3 +40,5 @@ dev = [
 
 [tool.pytest.ini_options]
 norecursedirs = ["depthai-python"]
+
+
