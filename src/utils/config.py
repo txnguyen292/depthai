@@ -2,7 +2,6 @@ import yaml
 from pathlib import Path
 from typing import Dict, Any, Optional
 from loguru import logger
-import os
 
 class ConfigManager:
     DEFAULT_CONFIG = {
@@ -12,7 +11,7 @@ class ConfigManager:
             "recording_time": 10
         },
         "output": {
-            "base_path": "./data",
+            "base_path": "./output",
             "rgb_filename": "rgb_video.mp4",
             "depth_filename": "depth_video.mp4"
         },
@@ -28,7 +27,8 @@ class ConfigManager:
         """
         Load configuration from a file or return defaults.
         """
-        config = ConfigManager.DEFAULT_CONFIG.copy()
+        import copy
+        config = copy.deepcopy(ConfigManager.DEFAULT_CONFIG)
         
         if config_path:
             path = Path(config_path)

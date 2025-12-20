@@ -72,7 +72,7 @@ uv run oakd show-video
 Record synchronized RGB and Depth video streams.
 
 ```bash
-# Default recording (10s, 30fps, saves to ./output)
+# Default recording (10s, 30fps, saves to ./output/data)
 uv run oakd record
 
 # Custom duration and output directory
@@ -106,25 +106,7 @@ uv run oakd detect --save-video --output-dir ./detections
 
 ## Configuration
 
-You can configure the application using `config.yml`. This file allows you to set default parameters for the camera, output paths, and depth processing.
-
-Example `config.yml`:
-```yaml
-camera:
-  rgb_resolution: [1920, 1080]
-  fps: 30
-  recording_time: 10
-
-output:
-  base_path: "data"
-  rgb_filename: "rgb_video.mp4"
-  depth_filename: "depth_video.mp4"
-
-depth:
-  colormap: "COLORMAP_JET"
-  normalize: true
-  equalize_hist: true
-```
+See [docs/configuration.md](docs/configuration.md) for supported YAML keys, defaults, and examples.
 
 ## Development
 

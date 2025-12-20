@@ -92,7 +92,7 @@ def record(
             recorder.record()
             
         console.print("[bold green]Recording finished successfully![/bold green]")
-        console.print(f"Files saved to: {Path(config['output']['base_path']).resolve()}")
+        console.print(f"Files saved to: {(Path(config['output']['base_path']) / 'data').resolve()}")
 
     except Exception as e:
         console.print(f"[bold red]Error during recording:[/bold red] {e}")
